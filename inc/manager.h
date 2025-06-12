@@ -4,16 +4,24 @@
 #include "level.h"
 #include "menu.h"
 
+typedef struct ManagerResources
+{
+  MenuResources menu;
+} ManagerResources;
+
 class ScreenManager
 {
 public:
-  ScreenManager()
+  ScreenManager(ManagerResources res)
   {
+    menu = new Menu(res.menu);
+
     currentLevel = new CommandLevel();
     menuOpen = true;
   }
   void update();
   void draw();
+  void draw3D();
 
 private:
   Screens currentScreen;
@@ -58,7 +66,16 @@ void ScreenManager::draw()
   if (menuOpen)
     menu->draw();
   else
+  {
     currentLevel->draw();
+    DrawText("Select 'tab' to open menu, and 'esc' to exit game.", 140, 20, 20, BLACK);
+  }
+}
+
+void ScreenManager::draw3D()
+{
+  if (!menuOpen)
+    currentLevel->draw3D();
 }
 
 Screens ScreenManager::screenSelection()

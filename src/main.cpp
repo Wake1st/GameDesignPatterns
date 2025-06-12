@@ -9,6 +9,7 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 
 #include "raylib.h"
 
+#include "globals.h"
 #include "manager.h"
 
 int main()
@@ -17,7 +18,10 @@ int main()
   SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
 
   // Create the window and OpenGL context
-  InitWindow(1280, 800, "Design Pattern Examples");
+  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Design Pattern Examples");
+
+  // load resources
+  Texture2D button = LoadTexture("resources/button.png");
 
   // setup a 3D camera
   Vector3 originPoint = Vector3{0.0f, 0.0f, 0.0f};
@@ -29,7 +33,8 @@ int main()
   mainCamera.projection = CAMERA_PERSPECTIVE;
 
   // example screen
-  ScreenManager *manager = new ScreenManager();
+  ScreenManager *manager = new ScreenManager(ManagerResources{
+      MenuResources{btnTexture : button}});
 
   // game loop
   while (!WindowShouldClose()) // run the loop untill the user presses ESCAPE or presses the Close button on the window
@@ -44,7 +49,7 @@ int main()
     ClearBackground(DARKGRAY);
 
     BeginMode3D(mainCamera);
-    DrawGrid(10, 1.0f);
+    manager->draw3D();
     EndMode3D();
 
     // draw some text using the default font
@@ -54,6 +59,9 @@ int main()
     // end the frame and get ready for the next one  (display frame, poll input, etc...)
     EndDrawing();
   }
+
+  // unload and resources
+  UnloadTexture(button);
 
   // destroy the window and cleanup the OpenGL context
   CloseWindow();
