@@ -1,4 +1,4 @@
-# Help Yourself
+# Game Design Patterns
 
 Design pattern implementations from the book [Game Programming Patterns](https://gameprogrammingpatterns.com/contents.html) using the [raylib](https://github.com/raysan5/raylib) library.
 
