@@ -17,6 +17,12 @@ public:
 
     frameHeight = (float)texture.height / BUTTON_FRAMES;
     rect = {0, 0, (float)texture.width, frameHeight};
+
+    bounds = {
+        position.x,
+        position.y,
+        rect.width,
+        rect.height};
   }
   void update();
   void draw();
@@ -27,12 +33,34 @@ private:
   Rectangle rect;
   const char *text;
   Vector2 offset;
+  Rectangle bounds;
 
+  int btnState;
   float frameHeight;
 };
 
 void Button::update()
 {
+  Vector2 mousePoint = GetMousePosition();
+
+  if (CheckCollisionPointRec(mousePoint, bounds))
+  {
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+      btnState = 2;
+    else
+      btnState = 1;
+
+    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+    {
+      // do some action
+    }
+  }
+  else
+  {
+    btnState = 0;
+  }
+
+  rect.y = btnState * frameHeight;
 }
 
 void Button::draw()

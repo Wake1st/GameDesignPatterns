@@ -36,7 +36,7 @@ int main()
   ScreenManager *manager = new ScreenManager(ManagerResources{
       MenuResources{btnTexture : button}});
 
-  // game loop
+    // game loop
   while (!WindowShouldClose()) // run the loop untill the user presses ESCAPE or presses the Close button on the window
   {
     //	-	-	-	-	-	-	-	-	UPDATE	-	-	-	-	-	-	-	-
