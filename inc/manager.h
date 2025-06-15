@@ -2,11 +2,13 @@
 #define MANAGER
 
 #include "level.h"
+#include "command.h"
 #include "menu.h"
 
 typedef struct ManagerResources
 {
   MenuResources menu;
+  LevelResources level;
 } ManagerResources;
 
 class ScreenManager
@@ -16,7 +18,8 @@ public:
   {
     menu = new Menu(res.menu);
 
-    currentLevel = new CommandLevel();
+    levelRes = res.level;
+    currentLevel = new CommandLevel(res.level);
     menuOpen = true;
   }
   void screenSelection(Screens selection);
@@ -29,6 +32,8 @@ private:
   Menu *menu;
   Level *currentLevel;
   bool menuOpen;
+
+  LevelResources levelRes;
 };
 
 void ScreenManager::update()
@@ -71,7 +76,7 @@ void ScreenManager::screenSelection(Screens selection)
   switch (selection)
   {
   case Screens::COMMAND:
-    currentLevel = new CommandLevel();
+    currentLevel = new CommandLevel(levelRes);
     menuOpen = false;
     break;
   case Screens::EVENT_QUEUE:
