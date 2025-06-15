@@ -69,7 +69,7 @@ void CommandLevel::update()
 void CommandLevel::draw()
 {
   DrawText("COMMAND Level", 20, 50, 40, BLACK);
-  DrawText("Instructions", 20, 100, 20, BLACK);
+  DrawText("Instructions:", 20, 100, 20, BLACK);
 
   story->draw();
 }
@@ -86,7 +86,7 @@ void EventQueueLevel::update()
 void EventQueueLevel::draw()
 {
   DrawText("EVENT QUEUE Level", 20, 50, 40, BLACK);
-  DrawText("Instructions", 20, 100, 20, BLACK);
+  DrawText("Instructions:", 20, 100, 20, BLACK);
 }
 
 void EventQueueLevel::draw3D()
@@ -100,7 +100,7 @@ void DoubleBufferLevel::update()
 void DoubleBufferLevel::draw()
 {
   DrawText("DOUBLE BUFFER Level", 20, 50, 40, BLACK);
-  DrawText("Instructions", 20, 100, 20, BLACK);
+  DrawText("Instructions:", 20, 100, 20, BLACK);
 }
 
 void DoubleBufferLevel::draw3D()

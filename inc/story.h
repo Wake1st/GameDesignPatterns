@@ -86,9 +86,12 @@ void Story::update()
 
 void Story::draw()
 {
-  DrawText(TextFormat("MAX:\t%i", COMMAND_COUNT), 20, 160, 20, DARKPURPLE);
-  DrawText(TextFormat("index:\t%i", index), 20, 200, 20, DARKPURPLE);
-  DrawText(TextFormat("end:\t%i", end), 20, 240, 20, DARKPURPLE);
+  DrawText("Use the arrow keys to move.", 40, 120, 20, BLACK);
+  DrawText("'ctrl+z'/'ctrl+y' to undo/redo.", 40, 140, 20, BLACK);
+
+  DrawText(TextFormat("Maximum Index:\t%i", COMMAND_COUNT), 20, 180, 20, DARKPURPLE);
+  DrawText(TextFormat("Current Index:\t%i", index), 20, 200, 20, DARKPURPLE);
+  DrawText(TextFormat("Highest Index:\t%i", end), 20, 220, 20, DARKPURPLE);
 
   display->draw();
 }
