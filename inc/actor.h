@@ -5,7 +5,7 @@
 #include "raymath.h"
 
 #define CLOSENESS 0.001f
-#define SPEED 0.1f
+#define SPEED 42.f
 
 class Actor
 {
@@ -38,17 +38,12 @@ void Actor::adjustPosition(float x, float y)
 
 void Actor::move()
 {
-  currentPosition = Vector3Lerp(
-      currentPosition,
-      targetPosition,
-      SPEED);
-
   float distance = Vector3Distance(currentPosition, targetPosition);
-  if (distance < CLOSENESS)
-  {
-    currentPosition = targetPosition;
-    isMoving = false;
-  }
+  float speed = SPEED * GetFrameTime();
+
+  currentPosition = Vector3MoveTowards(currentPosition, targetPosition, distance * speed);
+
+  isMoving = (currentPosition != targetPosition);
 }
 
 Vector3 Actor::getPosition()

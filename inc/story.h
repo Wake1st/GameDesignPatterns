@@ -8,37 +8,39 @@
 #include "command.h"
 #include "actor.h"
 #include "input.h"
-#include "assets.h"
+#include "input_display.h"
 
 class Story
 {
 public:
-  Story(Actor *act);
-  bool update();
+  Story(Actor *act, Texture2D arrow);
+  void update();
   void draw();
   void draw3D();
 
 private:
+  InputDisplay *display;
   InputHandler *input;
   Command *commands[COMMAND_COUNT];
-  int end = 0, index = 0;
   Actor *actor;
+  int end = 0, index = 0;
 
   void removeFrom(int ind);
 };
 
-Story::Story(Actor *act)
+Story::Story(Actor *act, Texture2D arrow)
 {
+  display = new InputDisplay(arrow);
   input = new InputHandler();
   actor = act;
 }
 
-bool Story::update()
+void Story::update()
 {
   if (actor->isMoving)
   {
     actor->move();
-    return false;
+    return;
   }
 
   Command *command = input->handleInput();
@@ -47,11 +49,14 @@ bool Story::update()
     // ensure we aren't exceeding bounds
     if (index >= COMMAND_COUNT)
     {
-      return false;
+      return;
     }
 
     // execute command on actor
     command->execute(actor);
+
+    // add new arrow
+    display->addNew(index);
 
     // add to end, or remove up to
     if (index < end)
@@ -65,20 +70,18 @@ bool Story::update()
       commands[index++] = command;
       end++;
     }
-
-    return true;
   }
 
   if (input->requestingUndo() && index > 0)
   {
     commands[--index]->undo(actor);
+    display->setFocus(index);
   }
   if (input->requestingRedo() && index < end)
   {
+    display->setFocus(index);
     commands[index++]->execute(actor);
   }
-
-  return false;
 }
 
 void Story::draw()
@@ -86,6 +89,8 @@ void Story::draw()
   DrawText(TextFormat("MAX:\t%i", COMMAND_COUNT), 20, 160, 20, DARKPURPLE);
   DrawText(TextFormat("index:\t%i", index), 20, 200, 20, DARKPURPLE);
   DrawText(TextFormat("end:\t%i", end), 20, 240, 20, DARKPURPLE);
+
+  display->draw();
 }
 
 void Story::draw3D()
@@ -98,6 +103,7 @@ void Story::removeFrom(int index)
   for (int i = index; i < COMMAND_COUNT; i++)
   {
     commands[i] = NULL;
+    display->removeAt(i);
   }
 }
 

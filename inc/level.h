@@ -27,9 +27,8 @@ class CommandLevel : public Level
 public:
   CommandLevel(LevelResources res)
   {
-    display = new InputDisplay(res.arrow);
     actor = new Actor();
-    story = new Story(actor);
+    story = new Story(actor, res.arrow);
   }
   ~CommandLevel()
   {
@@ -43,7 +42,6 @@ public:
 private:
   Story *story;
   Actor *actor;
-  InputDisplay *display;
 };
 
 class EventQueueLevel : public Level
@@ -65,10 +63,7 @@ public:
 // IMPLEMENTATIONS
 void CommandLevel::update()
 {
-  if (story->update())
-  {
-    display->update();
-  }
+  story->update();
 }
 
 void CommandLevel::draw()
@@ -77,7 +72,6 @@ void CommandLevel::draw()
   DrawText("Instructions", 20, 100, 20, BLACK);
 
   story->draw();
-  display->draw();
 }
 
 void CommandLevel::draw3D()
