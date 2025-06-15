@@ -22,6 +22,7 @@ int main()
 
   // load resources
   Texture2D button = LoadTexture("resources/button.png");
+  Texture2D arrow = LoadTexture("resources/arrow.png");
 
   // setup a 3D camera
   Vector3 originPoint = Vector3{0.0f, 0.0f, 0.0f};
@@ -34,9 +35,10 @@ int main()
 
   // example screen
   ScreenManager *manager = new ScreenManager(ManagerResources{
-      MenuResources{btnTexture : button}});
+      MenuResources{btnTexture : button},
+      LevelResources{arrow : arrow}});
 
-    // game loop
+  // game loop
   while (!WindowShouldClose()) // run the loop untill the user presses ESCAPE or presses the Close button on the window
   {
     //	-	-	-	-	-	-	-	-	UPDATE	-	-	-	-	-	-	-	-
@@ -62,6 +64,7 @@ int main()
 
   // unload and resources
   UnloadTexture(button);
+  UnloadTexture(arrow);
 
   // destroy the window and cleanup the OpenGL context
   CloseWindow();
