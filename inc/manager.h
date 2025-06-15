@@ -19,6 +19,7 @@ public:
     currentLevel = new CommandLevel();
     menuOpen = true;
   }
+  void screenSelection(Screens selection);
   void update();
   void draw();
   void draw3D();
@@ -28,37 +29,24 @@ private:
   Menu *menu;
   Level *currentLevel;
   bool menuOpen;
-
-  Screens screenSelection();
 };
 
 void ScreenManager::update()
 {
-  // check for screen swap
-  Screens selection = screenSelection();
-  switch (selection)
+  // run the level
+  Screens selection;
+  if (menuOpen)
+    selection = menu->update();
+  else
   {
-  case Screens::COMMAND:
-    currentLevel = new CommandLevel();
-    menuOpen = false;
-    break;
-  case Screens::EVENT_QUEUE:
-    currentLevel = new EventQueueLevel();
-    menuOpen = false;
-    break;
-  case Screens::DOUBLE_BUFFER:
-    currentLevel = new DoubleBufferLevel();
-    menuOpen = false;
-    break;
-  case Screens::MENU:
-    menuOpen = !menuOpen;
+    currentLevel->update();
+
+    if (IsKeyPressed(KEY_TAB))
+      selection = Screens::MENU;
   }
 
-  // run the level
-  if (menuOpen)
-    menu->update();
-  else
-    currentLevel->update();
+  // check for screen swap
+  screenSelection(selection);
 }
 
 void ScreenManager::draw()
@@ -78,17 +66,30 @@ void ScreenManager::draw3D()
     currentLevel->draw3D();
 }
 
-Screens ScreenManager::screenSelection()
+void ScreenManager::screenSelection(Screens selection)
 {
-  if (IsKeyPressed(KEY_C))
-    return Screens::COMMAND;
-  if (IsKeyPressed(KEY_Q))
-    return Screens::EVENT_QUEUE;
-  if (IsKeyPressed(KEY_D))
-    return Screens::DOUBLE_BUFFER;
-  if (IsKeyPressed(KEY_TAB))
-    return Screens::MENU;
-  return Screens::NONE;
+  switch (selection)
+  {
+  case Screens::COMMAND:
+    currentLevel = new CommandLevel();
+    menuOpen = false;
+    break;
+  case Screens::EVENT_QUEUE:
+    currentLevel = new EventQueueLevel();
+    menuOpen = false;
+    break;
+  case Screens::DOUBLE_BUFFER:
+    currentLevel = new DoubleBufferLevel();
+    menuOpen = false;
+    break;
+  case Screens::MENU:
+    menuOpen = !menuOpen;
+    break;
+  case Screens::NONE:
+  default:
+    // DO NOTHING
+    break;
+  }
 }
 
 #endif

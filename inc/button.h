@@ -2,13 +2,14 @@
 #define BUTTON
 
 #include "raylib.h"
+#include "screen.h"
 
 #define BUTTON_FRAMES 3
 
 class Button
 {
 public:
-  Button(const char *btnText, Texture2D btnTexture, Vector2 btnPosition, Vector2 textOffset)
+  Button(const char *btnText, Texture2D btnTexture, Vector2 btnPosition, Vector2 textOffset, Screens screenOption)
   {
     text = btnText;
     texture = btnTexture;
@@ -23,8 +24,10 @@ public:
         position.y,
         rect.width,
         rect.height};
+
+    screen = screenOption;
   }
-  void update();
+  Screens update();
   void draw();
 
 private:
@@ -37,10 +40,13 @@ private:
 
   int btnState;
   float frameHeight;
+
+  Screens screen;
 };
 
-void Button::update()
+Screens Button::update()
 {
+  Screens selection;
   Vector2 mousePoint = GetMousePosition();
 
   if (CheckCollisionPointRec(mousePoint, bounds))
@@ -52,7 +58,7 @@ void Button::update()
 
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
     {
-      // do some action
+      selection = screen;
     }
   }
   else
@@ -61,6 +67,8 @@ void Button::update()
   }
 
   rect.y = btnState * frameHeight;
+
+  return selection;
 }
 
 void Button::draw()
