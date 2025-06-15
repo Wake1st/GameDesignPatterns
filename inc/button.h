@@ -46,7 +46,7 @@ private:
 
 Screens Button::update()
 {
-  Screens selection;
+  Screens selection = Screens::NONE;
   Vector2 mousePoint = GetMousePosition();
 
   if (CheckCollisionPointRec(mousePoint, bounds))

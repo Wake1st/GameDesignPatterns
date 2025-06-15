@@ -20,7 +20,6 @@ public:
 
     levelRes = res.level;
     currentLevel = new CommandLevel(res.level);
-    menuOpen = true;
   }
   void screenSelection(Screens selection);
   void update();
@@ -28,10 +27,9 @@ public:
   void draw3D();
 
 private:
-  Screens currentScreen;
   Menu *menu;
   Level *currentLevel;
-  bool menuOpen;
+  bool menuOpen = true;
 
   LevelResources levelRes;
 };
@@ -39,7 +37,7 @@ private:
 void ScreenManager::update()
 {
   // run the level
-  Screens selection;
+  Screens selection = Screens::NONE;
   if (menuOpen)
     selection = menu->update();
   else
@@ -88,7 +86,7 @@ void ScreenManager::screenSelection(Screens selection)
     menuOpen = false;
     break;
   case Screens::MENU:
-    menuOpen = !menuOpen;
+    menuOpen = true;
     break;
   case Screens::NONE:
   default:

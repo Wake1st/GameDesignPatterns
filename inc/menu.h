@@ -35,10 +35,20 @@ private:
 
 Screens Menu::update()
 {
-  Screens selection;
+  Screens selection = Screens::NONE;
+
   selection = command->update();
+  if (selection != Screens::NONE)
+    return selection;
+
   selection = queue->update();
+  if (selection != Screens::NONE)
+    return selection;
+
   selection = buffer->update();
+  if (selection != Screens::NONE)
+    return selection;
+
   return selection;
 }
 
