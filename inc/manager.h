@@ -77,8 +77,8 @@ void ScreenManager::screenSelection(Screens selection)
     currentLevel = new CommandLevel(levelRes);
     menuOpen = false;
     break;
-  case Screens::EVENT_QUEUE:
-    currentLevel = new EventQueueLevel();
+  case Screens::INPUT_STORAGE:
+    currentLevel = new InputQueueLevel();
     menuOpen = false;
     break;
   case Screens::DOUBLE_BUFFER:
