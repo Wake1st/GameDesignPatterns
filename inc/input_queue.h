@@ -3,33 +3,34 @@
 
 #include <iostream>
 
+#include "globals.h"
 #include "command.h"
 
-#define MAX_ALLOWED 8
 #define COOLDOWN 0.6f
 
 class InputQueue
 {
 public:
-  void addInput(Command *command);
+  bool addInput(Command *command);
   Command *update();
   void draw();
 
 private:
-  Command *pending[MAX_ALLOWED];
+  Command *pending[COMMAND_COUNT];
   int head, tail = 0;
   float timer = 0.0;
 };
 
-void InputQueue::addInput(Command *command)
+bool InputQueue::addInput(Command *command)
 {
   // do not add if pending is full
-  if ((tail + 1) % MAX_ALLOWED == head)
-    return;
+  if ((tail + 1) % COMMAND_COUNT == head)
+    return false;
 
   // add to the end of the list
   pending[tail] = command;
-  tail = (tail + 1) % MAX_ALLOWED;
+  tail = (tail + 1) % COMMAND_COUNT;
+  return true;
 }
 
 Command *InputQueue::update()
@@ -52,7 +53,7 @@ Command *InputQueue::update()
 
   // return command
   Command *command = pending[head];
-  head = (head + 1) % MAX_ALLOWED;
+  head = (head + 1) % COMMAND_COUNT;
   return command;
 }
 

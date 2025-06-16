@@ -7,7 +7,7 @@
 #include "story.h"
 #include "actor.h"
 #include "command.h"
-#include "command_display.h"
+#include "queue_display.h"
 #include "input_queue.h"
 
 typedef struct LevelResources
@@ -48,11 +48,12 @@ private:
 class InputQueueLevel : public Level
 {
 public:
-  InputQueueLevel()
+  InputQueueLevel(LevelResources res)
   {
     inputHandler = new InputHandler();
     inputQueue = new InputQueue();
     actor = new Actor();
+    display = new QueueDisplay(res.arrow);
   }
   void update() override;
   void draw() override;
@@ -62,6 +63,7 @@ private:
   InputHandler *inputHandler;
   InputQueue *inputQueue;
   Actor *actor;
+  QueueDisplay *display;
 };
 
 class DoubleBufferLevel : public Level
@@ -95,9 +97,9 @@ void InputQueueLevel::update()
 {
   // store inputs from user
   Command *newCommand = inputHandler->handleInput();
-  if (newCommand)
+  if (newCommand && inputQueue->addInput(newCommand))
   {
-    inputQueue->addInput(newCommand);
+    display->addNew();
   }
 
   // pass command to actor when ready
@@ -105,6 +107,7 @@ void InputQueueLevel::update()
   if (readyCommand)
   {
     readyCommand->execute(actor);
+    display->shiftHead();
   }
 
   // make sure the actually move the character
@@ -117,6 +120,7 @@ void InputQueueLevel::draw()
   DrawText("Instructions:", 20, 100, 20, BLACK);
 
   inputQueue->draw();
+  display->draw();
 }
 
 void InputQueueLevel::draw3D()

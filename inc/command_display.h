@@ -11,21 +11,6 @@
 #define SIZE 128.f
 #define GAP 32.f
 
-typedef enum class Direction
-{
-  NONE,
-  UP,
-  DOWN,
-  RIGHT,
-  LEFT,
-} Direction;
-
-typedef struct ArrowData
-{
-  Vector2 offset;
-  float rotation;
-} ArrowData;
-
 class CommandDisplay
 {
 public:
@@ -47,6 +32,7 @@ private:
 
 CommandDisplay::CommandDisplay(Texture2D arr)
 {
+  // store texture data
   arrow = arr;
   start = (Vector2){SCREEN_WIDTH / 2.f - 624.f, SCREEN_HEIGHT - 160.f};
 
