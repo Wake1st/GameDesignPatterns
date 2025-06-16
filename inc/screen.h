@@ -6,7 +6,7 @@ typedef enum Screens
   NONE,
   MENU,
   COMMAND,
-  EVENT_QUEUE,
+  INPUT_STORAGE,
   DOUBLE_BUFFER
 } Screens;
 

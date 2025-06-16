@@ -8,6 +8,7 @@
 #include "actor.h"
 #include "command.h"
 #include "input_display.h"
+#include "input_queue.h"
 
 typedef struct LevelResources
 {
@@ -44,12 +45,23 @@ private:
   Actor *actor;
 };
 
-class EventQueueLevel : public Level
+class InputQueueLevel : public Level
 {
 public:
+  InputQueueLevel()
+  {
+    inputHandler = new InputHandler();
+    inputQueue = new InputQueue();
+    actor = new Actor();
+  }
   void update() override;
   void draw() override;
   void draw3D() override;
+
+private:
+  InputHandler *inputHandler;
+  InputQueue *inputQueue;
+  Actor *actor;
 };
 
 class DoubleBufferLevel : public Level
@@ -68,7 +80,7 @@ void CommandLevel::update()
 
 void CommandLevel::draw()
 {
-  DrawText("COMMAND Level", 20, 50, 40, BLACK);
+  DrawText("COMMAND", 20, 50, 40, BLACK);
   DrawText("Instructions:", 20, 100, 20, BLACK);
 
   story->draw();
@@ -79,18 +91,37 @@ void CommandLevel::draw3D()
   story->draw3D();
 }
 
-void EventQueueLevel::update()
+void InputQueueLevel::update()
 {
+  // store inputs from user
+  Command *newCommand = inputHandler->handleInput();
+  if (newCommand)
+  {
+    inputQueue->addInput(newCommand);
+  }
+
+  // pass command to actor when ready
+  Command *readyCommand = inputQueue->update();
+  if (readyCommand)
+  {
+    readyCommand->execute(actor);
+  }
+
+  // make sure the actually move the character
+  actor->move();
 }
 
-void EventQueueLevel::draw()
+void InputQueueLevel::draw()
 {
-  DrawText("EVENT QUEUE Level", 20, 50, 40, BLACK);
+  DrawText("INPUT QUEUE", 20, 50, 40, BLACK);
   DrawText("Instructions:", 20, 100, 20, BLACK);
+
+  inputQueue->draw();
 }
 
-void EventQueueLevel::draw3D()
+void InputQueueLevel::draw3D()
 {
+  DrawCube(actor->getPosition(), GRID_SIZE, GRID_SIZE, GRID_SIZE, PURPLE);
 }
 
 void DoubleBufferLevel::update()
@@ -99,7 +130,7 @@ void DoubleBufferLevel::update()
 
 void DoubleBufferLevel::draw()
 {
-  DrawText("DOUBLE BUFFER Level", 20, 50, 40, BLACK);
+  DrawText("DOUBLE BUFFER", 20, 50, 40, BLACK);
   DrawText("Instructions:", 20, 100, 20, BLACK);
 }
 

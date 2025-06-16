@@ -1,9 +1,6 @@
 #ifndef STORY
 #define STORY
 
-#include <iostream>
-#include <vector>
-
 #include "globals.h"
 #include "command.h"
 #include "actor.h"

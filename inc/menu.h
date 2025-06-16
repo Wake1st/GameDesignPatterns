@@ -21,7 +21,7 @@ public:
     Vector2 gap = (Vector2){0.0f, 32.0f};
 
     command = new Button("COMMAND", res.btnTexture, center + (Vector2){-256.0f, -192.0f} - gap, (Vector2){150.0f, 44.0f}, Screens::COMMAND);
-    queue = new Button("EVENT QUEUE", res.btnTexture, center + (Vector2){-256.0, -64.0f}, (Vector2){105.0f, 44.0f}, Screens::EVENT_QUEUE);
+    queue = new Button("INPUT QUEUE", res.btnTexture, center + (Vector2){-256.0, -64.0f}, (Vector2){105.0f, 44.0f}, Screens::INPUT_STORAGE);
     buffer = new Button("DOUBLE BUFFER", res.btnTexture, center + (Vector2){-256.0f, 64.0f} + gap, (Vector2){85.0f, 44.0f}, Screens::DOUBLE_BUFFER);
   }
   Screens update();
@@ -35,10 +35,20 @@ private:
 
 Screens Menu::update()
 {
-  Screens selection;
+  Screens selection = Screens::NONE;
+
   selection = command->update();
+  if (selection != Screens::NONE)
+    return selection;
+
   selection = queue->update();
+  if (selection != Screens::NONE)
+    return selection;
+
   selection = buffer->update();
+  if (selection != Screens::NONE)
+    return selection;
+
   return selection;
 }
 

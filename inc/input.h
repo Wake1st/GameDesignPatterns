@@ -31,13 +31,13 @@ InputHandler::InputHandler()
 
 Command *InputHandler::handleInput()
 {
-  if (IsKeyDown(KEY_LEFT))
+  if (IsKeyPressed(KEY_LEFT))
     return moveLeft;
-  if (IsKeyDown(KEY_RIGHT))
+  if (IsKeyPressed(KEY_RIGHT))
     return moveRight;
-  if (IsKeyDown(KEY_UP))
+  if (IsKeyPressed(KEY_UP))
     return moveUp;
-  if (IsKeyDown(KEY_DOWN))
+  if (IsKeyPressed(KEY_DOWN))
     return moveDown;
 
   // nothing pressed
@@ -46,12 +46,12 @@ Command *InputHandler::handleInput()
 
 bool InputHandler::requestingUndo()
 {
-  return IsKeyDown(KEY_LEFT_CONTROL) && IsKeyDown(KEY_Z);
+  return IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_Z);
 }
 
 bool InputHandler::requestingRedo()
 {
-  return IsKeyDown(KEY_LEFT_CONTROL) && IsKeyDown(KEY_Y);
+  return IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_Y);
 }
 
 #endif
