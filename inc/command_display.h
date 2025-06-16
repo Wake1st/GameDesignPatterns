@@ -1,5 +1,5 @@
-#ifndef INPUT_DISPLAY
-#define INPUT_DISPLAY
+#ifndef COMMAND_DISPLAY
+#define COMMAND_DISPLAY
 
 #include <unordered_map>
 #include "raylib.h"
@@ -26,10 +26,10 @@ typedef struct ArrowData
   float rotation;
 } ArrowData;
 
-class InputDisplay
+class CommandDisplay
 {
 public:
-  InputDisplay(Texture2D arr);
+  CommandDisplay(Texture2D arr);
   void addNew(int i);
   void setFocus(int i);
   void removeAt(int i);
@@ -45,7 +45,7 @@ private:
   int focus = 0;
 };
 
-InputDisplay::InputDisplay(Texture2D arr)
+CommandDisplay::CommandDisplay(Texture2D arr)
 {
   arrow = arr;
   start = (Vector2){SCREEN_WIDTH / 2.f - 624.f, SCREEN_HEIGHT - 160.f};
@@ -72,7 +72,7 @@ InputDisplay::InputDisplay(Texture2D arr)
               }});
 }
 
-void InputDisplay::addNew(int i)
+void CommandDisplay::addNew(int i)
 {
   // set new focus
   focus = i;
@@ -89,17 +89,17 @@ void InputDisplay::addNew(int i)
     directions[index++] = Direction::DOWN;
 }
 
-void InputDisplay::setFocus(int i)
+void CommandDisplay::setFocus(int i)
 {
   focus = i;
 }
 
-void InputDisplay::removeAt(int i)
+void CommandDisplay::removeAt(int i)
 {
   directions[i] = Direction::NONE;
 }
 
-void InputDisplay::draw()
+void CommandDisplay::draw()
 {
   for (int i = 0; i < index; i++)
   {

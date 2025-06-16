@@ -7,7 +7,7 @@
 #include "story.h"
 #include "actor.h"
 #include "command.h"
-#include "input_display.h"
+#include "command_display.h"
 #include "input_queue.h"
 
 typedef struct LevelResources

@@ -5,7 +5,7 @@
 #include "command.h"
 #include "actor.h"
 #include "input.h"
-#include "input_display.h"
+#include "command_display.h"
 
 class Story
 {
@@ -16,7 +16,7 @@ public:
   void draw3D();
 
 private:
-  InputDisplay *display;
+  CommandDisplay *display;
   InputHandler *input;
   Command *commands[COMMAND_COUNT];
   Actor *actor;
@@ -27,7 +27,7 @@ private:
 
 Story::Story(Actor *act, Texture2D arrow)
 {
-  display = new InputDisplay(arrow);
+  display = new CommandDisplay(arrow);
   input = new InputHandler();
   actor = act;
 }
